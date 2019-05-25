@@ -63,7 +63,7 @@
 								</div>
 								<div class="form-row">
 									<div class="col-2 input-group-lg">
-										<input disabled type="text" id="rateSet" name="rateSet" class="form-control">
+										<input disabled type="text" id="rateSet" name="rateSet" value={{rate}} class="form-control">
 									</div>
 									<div class="col">
 										<button type="submit" id="convert" class="btn btn-block btn-lg btn-outline-danger">Convert &#38; Record Transfer </button>
@@ -188,6 +188,14 @@
 								</tr>
 							</thead>
 							<tbody id="loadData">
+								{% for transact in transactions %}
+									<tr>
+										<td>{{transact.usAmount}}</td>
+										<td>{{transact.gdAmount}}</td>
+										<td>{{transact.transferDate}}</td>
+										<td><a href="#">report</a></td>
+									</tr>
+								{% endfor %}
 							</tbody>
 						</table>
 					  </div>

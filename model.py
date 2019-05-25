@@ -113,6 +113,6 @@ class Rate(Base):
             }
 
 
-engine = create_engine('mysql+pymysql://root:Bank2427249@localhost/transfer')
+engine = create_engine('mysql+pymysql://root:Bank2427249@localhost/transfer', pool_pre_ping=True)
 Base.metadata.create_all(engine)
 

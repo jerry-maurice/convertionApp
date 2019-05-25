@@ -31,7 +31,7 @@ login_manager = LoginManager()
 login_manager.init_app(app)
 
 
-engine = create_engine('mysql+pymysql://root:Bank2427249@localhost/transfer')
+engine = create_engine('mysql+pymysql://root:Bank2427249@localhost/transfer', pool_pre_ping=True)
 Base.metadata.create_all(engine)
 
 DBSession = sessionmaker(bind=engine)
@@ -145,7 +145,11 @@ def get_user(id):
 @app.route('/')
 @login_required
 def transfer():
-    return render_template('transfer.html')
+        today = str(date.today())
+        rate = session.query(Rate).first();
+        transactions = session.query(Transaction).filter(Transaction.user_id==current_user.id,
+                                                     Transaction.transferDate >= today).all()
+        return render_template('transfer.html',rate=rate.convertRate, transactions=transactions)
 
 
 @app.route('/transfer/all')
