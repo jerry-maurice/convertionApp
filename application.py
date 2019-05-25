@@ -13,7 +13,7 @@ from sqlalchemy import func
 from sqlalchemy.orm import sessionmaker
 from model import Base, User, Transaction, Rate
 
-from flask_login import LoginManager, UserMixin, login_required, login_user
+from flask_login import LoginManager, UserMixin, login_required, login_user, current_user
 from flask_login import logout_user
 from werkzeug.utils import secure_filename
 
@@ -43,7 +43,6 @@ session = DBSession()
 def user_loader(user_email):
 	user = session.query(User).filter_by(email=user_email).one()
 	if user:
-                g.user = user
                 return user
 	else:
 		return None
@@ -84,7 +83,6 @@ def login():
                                         ),200#,{'Location':url_for('login')}
                         else:
                                 login_user(user)
-                                g.user = user
                                 return jsonify(
                                         {'message':'successfully login','location':url_for('transfer')}
                                         ),201#, {'Location':url_for('transfer')}
@@ -208,6 +206,11 @@ def rateConfiguration():
                 return jsonify({'message':'successfully added'})
         if request.method == 'GET':
                 return jsonify({'rate':rate.serialize})
+
+
+@app.before_request
+def before_request():
+        g.user = current_user
                 
 
 
