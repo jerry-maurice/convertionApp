@@ -160,7 +160,7 @@ def getAllTransfer():
 def getUserTransfer():
         today = str(date.today())
         app.logger.info(today)
-        transfer = session.query(Transaction).filter(Transaction.user_id==g.user.id,
+        transfer = session.query(Transaction).filter(Transaction.user_id==current_user.id,
                                                      Transaction.transferDate >= today).all()
         return jsonify({'transactions':[i.serialize for i in transfer]})
 
@@ -184,7 +184,7 @@ def convertAmount():
         # add a if to check rate
         # calculate gd amount
         gdAmount = float(usAmount) * rate.convertRate
-        transaction = Transaction(usAmount=usAmount, gdAmount=gdAmount, rate=rate.convertRate, user_id=g.user.id)
+        transaction = Transaction(usAmount=usAmount, gdAmount=gdAmount, rate=rate.convertRate, user_id=current_user.id)
         session.add(transaction)
         session.commit()
         return jsonify({'message':'successfully added', 'gdAmount':gdAmount})
@@ -208,9 +208,12 @@ def rateConfiguration():
                 return jsonify({'rate':rate.serialize})
 
 
-@app.before_request
-def before_request():
-        g.user = current_user
+@app.route('/rate/view')
+@login_required
+def viewRate():
+        if request.method == 'GET':
+                return render_template('rate.html')
+
                 
 
 
