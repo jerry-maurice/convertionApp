@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+	  <style>
+		  .scroll{
+			  max-height: 400px;
+			  overflow-y: auto;
+		  }
+	  </style>
+	  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+
+    <title>Transfer Record</title>
+  </head>
+  <body>
+	  <div class="container-fluid">
+		  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+			  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			  </button>
+			  <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+				<a class="navbar-brand" href="{{url_for('transfer')}}">Convertion App</a>
+				<ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+				  <li class="nav-item active">
+					<a class="nav-link" href="{{url_for('transfer')}}">Home <span class="sr-only">(current)</span></a>
+				  </li>
+				  <li class="nav-item">
+					<a class="nav-link" href="#">Account</a>
+				  </li>
+				</ul>
+				<div class="my-2 my-lg-0">
+				  <button id="logout" value="{{url_for('logout')}}" class="btn btn-danger">Logout</button>
+				</div>
+			  </div>
+			</nav>
+	  </div>
+	  <div class="container">
+		  <div class="page">
+			  <!-- Calculation side -->
+		  	<div class="calculation mt-5">
+		  		<div class="row">
+					<div class="col-md-8">
+						<div class="card bg-light mb-3"  style=" height: 22rem;">
+						  <div class="card-body">
+							<h5 class="card-title">Transaction</h5>
+							<form id="transferAmount">
+								<div class="form-group">
+								  	<label for="">Amount Received</label>
+									<div class="input-group mb-3 input-group-lg">
+									  <div class="input-group-prepend">
+										<span class="input-group-text">$</span>
+									  </div>
+									  <input required type="number" class="form-control" name="amountReceived" step="0.01">
+									</div>
+								</div>
+								<div class="form-row">
+									<div class="col-2 input-group-lg">
+										<input disabled type="text" id="rateSet" name="rateSet" class="form-control">
+									</div>
+									<div class="col">
+										<button type="submit" id="convert" class="btn btn-block btn-lg btn-outline-danger">Convert &#38; Record Transfer </button>
+									</div>
+								</div>
+								<div class="form-group">
+								  	<label for="">Amount To Give</label>
+									<div class="input-group mb-3 input-group-lg">
+									  <div class="input-group-prepend">
+										<span class="input-group-text">Gdes</span>
+									  </div>
+									  <input type="text" class="form-control" name="amountGiven" id="amountToGive" disabled>
+									</div>
+								</div>
+							  	
+							  </form>
+						  </div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="text-white card bg-info mb-3" style=" height: 22rem;">
+						  <div class="card-body">
+							<!--<h5 class="card-title">Calculate Change</h5>
+							  <form>
+							  	<div class="form-group">
+								  	<label for="">Amount Given</label>
+									<input id="given" class="form-control" type="number" step="0.01" name="priceGiven">
+								  </div>
+							  	<div class="form-group">
+								  	<label for="">Actual Price</label>
+									<input id="actual" class="form-control" type="number" step="0.01" name="priceActual">
+								  </div>
+								  <div class="form-group text-center">
+								  	<button id="calculateChange" type="button" class="btn btn-block btn-outline-warning">Calculate</button>
+								  </div>
+								  <div class="form-group">
+								  	<label class="sr-only">Result</label>
+									  <input id="result" type="number" step="0.01" class="form-control" name="result" placeholder="Result">
+								  </div>
+							  </form>
+							-->
+							  <div class="calculator">
+								<div class="form-group">
+									<input value="0" type="text" class="form-control" id="result" disabled style="text-align:right">
+								</div>
+								  <div class="row text-center">
+									  <div class="col-3">
+										<button type="button" id="add" class="btn btn-lg btn-danger">+</button>
+									  </div>
+									  <div class="col-3">
+										<button type="button" id="minus" class="btn btn-lg btn-secondary">-</button>
+									  </div>
+									  <div class="col-3">
+										<button type="button" id="divide" class="btn btn-lg btn-primary">/</button>
+									  </div>
+									  <div class="col-3">
+										<button type="button" id="multiply" class="btn btn-lg btn-warning">*</button>
+									  </div>
+								  </div>
+								  <div class="row mt-2 text-center">
+									  <div class="col-4">
+										<button onClick="" type="button" id="one" value="1" class="btn btn-lg btn-light">1</button>
+									  </div>
+									  <div class="col-4">
+										<button type="button" id="two" value="2" class="btn btn-lg btn-light">2</button>
+									  </div>
+									  <div class="col-4">
+										<button type="button" id="three" value="3" class="btn btn-lg btn-light">3</button>
+									  </div>
+								  </div>
+								  <div class="row mt-2 text-center">
+									  <div class="col-4">
+										<button type="button" id="four" value="4" class="btn btn-lg btn-light">4</button>
+									  </div>
+									  <div class="col-4">
+										<button type="button" id="five" value="5" class="btn btn-lg btn-light">5</button>
+									  </div>
+									  <div class="col-4">
+										<button type="button" id="six" value="6" class="btn btn-lg btn-light">6</button>
+									  </div>
+								  </div>
+								  <div class="row mt-2 text-center">
+									  <div class="col-4">
+										<button type="button" id="seven" value="7" class="btn btn-lg btn-light">7</button>
+									  </div>
+									  <div class="col-4">
+										<button type="button" id="eight" value="8" class="btn btn-lg btn-light">8</button>
+									  </div>
+									  <div class="col-4">
+										<button type="button" id="nine" value="9" class="btn btn-lg btn-light">9</button>
+									  </div>
+								  </div>
+								  <div class="row mt-2">
+								  	<div class="col-4">
+									  	<button type="button" id="zero" value="0" class="btn btn-block btn-light">0</button>
+									  </div>
+								  	<div class="col-4">
+									  	<button type="button" id="clear" class="btn btn-block btn-danger">C</button>
+									  </div>
+								  	<div class="col-4">
+									  	<button type="button" id="equal" class="btn btn-block btn-warning">=</button>
+									  </div>
+								  </div>
+							  </div>
+						  </div>
+						</div>
+					</div>
+				</div>
+			  </div>
+			  <!--Daily report side -->
+			  <div class="report mt-5">
+				  <div class="card">
+					  <div class="card-body scroll">
+						  <h5 class="card-title">Today's Transaction</h5>
+						<table class="table">
+							<thead>
+								<tr>
+									<th>$ amount</th>
+									<th>Gdes amount</th>
+									<th>Transaction Time</th>
+									<th>Action</th>
+								</tr>
+							</thead>
+							<tbody id="loadData">
+							</tbody>
+						</table>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+	  </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	  <script src="{{url_for('static',filename='js/transfer.js')}}"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+  </body>
+</html>
